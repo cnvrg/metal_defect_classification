@@ -63,7 +63,7 @@ class EpochSizeError(Exception):
         self.epoch = epoch
 
     def __str__(self):
-        return f"EpochSizeError: {self.epoch} is an invalid size. Number of epochs needs to be a value between 0 and 50"
+        return f"EpochSizeError: {self.epoch} is an invalid size. Number of epochs needs to be a value between 1 and 50"
 
 
 class IncorrectFormatError(Exception):
@@ -99,7 +99,7 @@ def validate_arguments(
         NoDatasetError: If train_directory and test_directory are both None
         DatasetPathError: If either train images directory or test images directory is None
         IncorrectFormatError: If the dataset files are not in jpg or png format
-        EpochSizeError: If epoch size is not between 0 and 50
+        EpochSizeError: If epoch size is not between 1 and 50
              
 
     """
@@ -122,8 +122,8 @@ def validate_arguments(
         raise IncorrectFormatError
 
 
-    if not (float(epoch) > 0 and float(epoch) <= 50):
-        raise EpochSizeError(float(epoch))
+    if not (epoch > 0 and epoch <= 50):
+        raise EpochSizeError(epoch)
 
 
 
