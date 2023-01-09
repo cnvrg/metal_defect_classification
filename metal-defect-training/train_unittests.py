@@ -1,7 +1,6 @@
 import os
 import sys
-
-
+from tensorflow.keras.models import Model, load_model
 
 import numpy as np
 import unittest
@@ -28,7 +27,7 @@ class TestMetalDefect(unittest.TestCase):
         self.train_dir = config["train_dir"]
         self.test_dir = config["test_dir"]
         self.epoch = config["epoch"]
-        self.model = load_model('DefectModel.h5')
+        self.model = load_model('DefectModel')
 
 
 
