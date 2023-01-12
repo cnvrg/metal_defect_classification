@@ -18,8 +18,6 @@ import matplotlib.pyplot as plt
 cnvrg_workdir = os.environ.get("CNVRG_WORKDIR", "/cnvrg")
 
 
-# train_inclusion_dir = os.path.join('../NEU-DET/train/images/inclusion')
-# train_inclusion_names = os.listdir(train_inclusion_dir)
 
 class NoDatasetError(Exception):
     """Raise if train and validation images paths are None"""
@@ -43,9 +41,10 @@ class DatasetPathError(Exception):
         )
 
 
-    
+
+
 class EpochSizeError(Exception):
-    """Raise if epochs size is not between 0 and 50"""
+    """Raise if epochs size is not between 1 and 50"""
 
     def __init__(self, epoch):
         super().__init__(epoch)
@@ -65,7 +64,7 @@ class IncorrectFormatError(Exception):
         return "IncorrectFormatError: Train and test images should be in .jpg or .png format"
 
 
-    
+
 def validate_arguments(
     train_directory, test_directory, epoch
 ):
@@ -92,9 +91,10 @@ def validate_arguments(
 
 
 
-    if train_directory.lower() == "none":
-        if (test_directory.lower() != "none" 
-        ):
+    if (
+        train_directory.lower() == "none"
+        or test_directory.lower() == "none"
+    ):
             raise DatasetPathError
 
 
@@ -103,8 +103,8 @@ def validate_arguments(
         raise IncorrectFormatError
 
 
-    if not (epoch > 0 and epoch <= 50):
-        raise EpochSizeError(epoch)
+    if not (epoch > 1 and epoch <= 50):
+        raise EpochSizeError(float(epoch))
 
 
 
