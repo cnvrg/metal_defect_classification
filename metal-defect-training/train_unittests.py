@@ -11,7 +11,7 @@ from train import (
     DatasetPathError,
     IncorrectFormatError,
     EpochSizeError,
-    validate_arguments,
+    validate_arguments
 )
 
 
