@@ -43,18 +43,7 @@ class DatasetPathError(Exception):
         )
 
 
-class ClassFileFormatError(Exception):
-    """Raise if the classes file is not in txt or csv format"""
-
-    def __init__(self):
-        super().__init__()
-
-    def __str__(self):
-        return (
-            "ClassFileFormatError: The classes file needs to be in txt or csv format!"
-        )
-
-
+    
 class EpochSizeError(Exception):
     """Raise if epochs size is not between 0 and 50"""
 
