@@ -1,6 +1,7 @@
 import os
 import sys
-from tensorflow.keras.models import Model, load_model
+from tensorflow.keras.models import model, load_model
+
 
 import numpy as np
 import unittest
@@ -10,9 +11,8 @@ from train import (
     DatasetPathError,
     IncorrectFormatError,
     EpochSizeError,
-    SaveModelError, validate_arguments
+    validate_arguments,
 )
-
 
 
 class TestMetalDefect(unittest.TestCase):
@@ -21,16 +21,14 @@ class TestMetalDefect(unittest.TestCase):
         # Read config file for unittesting
         with open("./test_config.yaml", "r") as file:
             config = yaml.load(file, Loader=yaml.FullLoader)
-
         # Define paths from config file for validate_arguments function
-    
+
         self.train_dir = config["train_dir"]
         self.test_dir = config["test_dir"]
         self.epoch = config["epoch"]
-        self.model = load_model('DefectModel')
-
-
-
+        self.model = load_model("DefectModel.h5")
+        self.test_data = config["test_data"]
+        self.test_labels = config["test_labels"]
 
 
 class TestValidateArguments(TestMetalDefect):
@@ -48,18 +46,29 @@ class TestValidateArguments(TestMetalDefect):
 
     def epoch_size_error(self):
         """Checks for EpochSizeError if number of epochs is not between 1 and 50"""
-        with self.assertRaises(DatasetPathError):
+        with self.assertRaises(EpochSizeError):
             validate_arguments(self.train_dir, self.test_dir, "55")
-        with self.assertRaises(DatasetPathError):
+        with self.assertRaises(EpochSizeError):
             validate_arguments(self.train_dir, self.test_dir, "0")
 
 
-class TestModelError(TestMetalDefect):
+class ModelParamsError(TestMetalDefect):
+    def __str__(self):
+        """Checks if the model has parameters within bounds"""
+        score = model.evaluate(self.test_images, self.test_labels, verbose=0)
+
+        if not (float(score[0]) > 0.1 and float(score[0]) <= 0.3):
+            return "ModelLossError: Model loss is not within acceptable parameters"
+        if not (float(score[1]) > 88 and float(score[0]) <= 100):
+            return (
+                "ModelAccuracyError: Model accuracy is not within acceptable parameters"
+            )
+
+
+class SaveModelError(TestMetalDefect):
     def test_return_type(self):
         """Checks if the function returns a model h5 file"""
         self.assertIsInstance(self.model, h5)
 
     def __str__(self):
-        return "TestModelError: Model h5 file not saved, check model output"
-
-
+        return "SaveModelError: Model h5 file not saved, check model output"
