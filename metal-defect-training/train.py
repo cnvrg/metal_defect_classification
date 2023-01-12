@@ -76,15 +76,7 @@ class IncorrectFormatError(Exception):
         return "IncorrectFormatError: Train and test images should be in .jpg or .png format"
 
 
-class SaveModelError(Exception):
-    def __init__(self):
-        super().__init__()
-
-    def __str__(self):
-        return "SaveModelError: Model h5 file not saved, check model output"
-
-
-
+    
 def validate_arguments(
     train_directory, test_directory, epoch
 ):
