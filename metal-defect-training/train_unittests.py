@@ -25,6 +25,7 @@ class TestMetalDefect(unittest.TestCase):
 
         self.train_dir = config["train_dir"]
         self.test_dir = config["test_dir"]
+        self.test_dir_txt = config["test_dir_txt"]
         self.epoch = config["epoch"]
         self.model = load_model("DefectModel.h5")
         self.test_data = config["test_data"]
@@ -52,6 +53,12 @@ class TestValidateArguments(TestMetalDefect):
             validate_arguments(self.train_dir, self.test_dir, "0")
 
 
+    def test_class_file_format_error(self):
+        """Checks for IncorrectFormatError if images are not in jpg or png format"""
+        with self.assertRaises(IncorrectFormatError):
+            validate_arguments(self.train_dir, self.test_dir_txt, "3")
+
+
 class ModelParamsError(TestMetalDefect):
     def __str__(self):
         """Checks if the model has parameters within bounds"""
@@ -60,7 +67,9 @@ class ModelParamsError(TestMetalDefect):
         if not (float(score[0]) > 0.1 and float(score[0]) <= 0.3):
             return "ModelLossError: Model loss is not within acceptable parameters"
         if not (float(score[1]) > 88 and float(score[0]) <= 100):
-            return "ModelAccuracyError: Model accuracy is not within acceptable parameters"
+            return (
+                "ModelAccuracyError: Model accuracy is not within acceptable parameters"
+            )
 
 
 class SaveModelError(TestMetalDefect):
