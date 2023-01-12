@@ -60,9 +60,7 @@ class ModelParamsError(TestMetalDefect):
         if not (float(score[0]) > 0.1 and float(score[0]) <= 0.3):
             return "ModelLossError: Model loss is not within acceptable parameters"
         if not (float(score[1]) > 88 and float(score[0]) <= 100):
-            return (
-                "ModelAccuracyError: Model accuracy is not within acceptable parameters"
-            )
+            return "ModelAccuracyError: Model accuracy is not within acceptable parameters"
 
 
 class SaveModelError(TestMetalDefect):
