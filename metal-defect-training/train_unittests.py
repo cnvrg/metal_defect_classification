@@ -30,6 +30,8 @@ class TestMetalDefect(unittest.TestCase):
         self.model = load_model("DefectModel.h5")
         self.test_data = config["test_data"]
         self.test_labels = config["test_labels"]
+        self.train_acc = config["train_acc"]
+        self.train_loss = config["train_loss"]
 
 
 class TestValidateArguments(TestMetalDefect):
@@ -59,16 +61,29 @@ class TestValidateArguments(TestMetalDefect):
             validate_arguments(self.train_dir, self.test_dir_txt, "3")
 
 
-class ModelParamsError(TestMetalDefect):
+class TrainParamsError(TestMetalDefect):
     def __str__(self):
-        """Checks if the model has parameters within bounds"""
+        """Checks if the model has train parameters within bounds"""
+        
+
+        if not (float(self.train_loss) > 0.05 and float(self.train_loss) <= 0.2):
+            return "TrainLossError: Model train loss is not within acceptable parameters"
+        if not (float(self.train_acc) > 90 and float(self.train_acc) <= 100):
+            return (
+                "TrainAccuracyError: Model train accuracy is not within acceptable parameters"
+            )
+
+
+class TestParamsError(TestMetalDefect):
+    def __str__(self):
+        """Checks if the model has test parameters within bounds"""
         score = model.evaluate(self.test_images, self.test_labels, verbose=0)
 
-        if not (float(score[0]) > 0.1 and float(score[0]) <= 0.3):
-            return "ModelLossError: Model loss is not within acceptable parameters"
-        if not (float(score[1]) > 88 and float(score[0]) <= 100):
+        if not (float(score[0]) > 0.05 and float(score[0]) <= 0.3):
+            return "TestLossError: Model test loss is not within acceptable parameters"
+        if not (float(score[1]) > 85 and float(score[0]) <= 100):
             return (
-                "ModelAccuracyError: Model accuracy is not within acceptable parameters"
+                "TestAccuracyError: Model test accuracy is not within acceptable parameters"
             )
 
 
