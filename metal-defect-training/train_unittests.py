@@ -32,6 +32,8 @@ class TestMetalDefect(unittest.TestCase):
         self.test_labels = config["test_labels"]
         self.train_acc = config["train_acc"]
         self.train_loss = config["train_loss"]
+        self.test_acc = config["test_acc"]
+        self.test_loss = config["test_loss"]
 
 
 class TestValidateArguments(TestMetalDefect):
@@ -62,30 +64,29 @@ class TestValidateArguments(TestMetalDefect):
 
 
 class TrainParamsError(TestMetalDefect):
-    def __str__(self):
-        """Checks if the model has train parameters within bounds"""
-        
 
-        if not (float(self.train_loss) > 0.05 and float(self.train_loss) <= 0.2):
-            return "TrainLossError: Model train loss is not within acceptable parameters"
-        if not (float(self.train_acc) > 90 and float(self.train_acc) <= 100):
-            return (
-                "TrainAccuracyError: Model train accuracy is not within acceptable parameters"
-            )
+    def train_params(self):
+        """Checks if the model has train parameters within bounds"""
+        self.assertTrue(90 <= self.train_acc <= 100 & 0.05 <= self.train_loss <= 0.2)
+
+    def __str__(self):
+        return "TrainParametersError: Model train accuracy/loss is not within acceptable parameters"
+
+
+
 
 
 class TestParamsError(TestMetalDefect):
-    def __str__(self):
+
+    def test_params(self):
         """Checks if the model has test parameters within bounds"""
-        score = model.evaluate(self.test_images, self.test_labels, verbose=0)
+        self.assertTrue(85 <= self.test_acc <= 100 & 0.05 <= self.test_loss <= 0.3)
 
-        if not (float(score[0]) > 0.05 and float(score[0]) <= 0.3):
-            return "TestLossError: Model test loss is not within acceptable parameters"
-        if not (float(score[1]) > 85 and float(score[0]) <= 100):
-            return (
-                "TestAccuracyError: Model test accuracy is not within acceptable parameters"
-            )
+    def __str__(self):
+        return "TestParametersError: Model test accuracy/loss is not within acceptable parameters"
 
+
+    
 
 class SaveModelError(TestMetalDefect):
     def test_return_type(self):
