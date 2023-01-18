@@ -1,1 +1,8 @@
-
+train_al : 90
+train_ah : 100
+train_ll : 0.05
+train_lh : 0.2 
+test_al : 85  
+test_ah : 100 
+test_ll : 0.05 
+test_lh : 0.3
