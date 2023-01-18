@@ -20,20 +20,38 @@ class TestMetalDefect(unittest.TestCase):
         """Overrides setUp from unittest to create artifacts for testing"""
         # Read config file for unittesting
         with open("./test_config.yaml", "r") as file:
-            config = yaml.load(file, Loader=yaml.FullLoader)
+            config1 = yaml.load(file, Loader=yaml.FullLoader)
+
+        with open("./config_params.yaml", "r") as file:
+            config2 = yaml.load(file, Loader=yaml.FullLoader)
+
+
+
         # Define paths from config file for validate_arguments function
 
-        self.train_dir = config["train_dir"]
-        self.test_dir = config["test_dir"]
-        self.test_dir_txt = config["test_dir_txt"]
-        self.epoch = config["epoch"]
+        self.train_dir = config1["train_dir"]
+        self.test_dir = config1["test_dir"]
+        self.test_dir_txt = config1["test_dir_txt"]
+        self.epoch = config1["epoch"]
         self.model = load_model("DefectModel.h5")
-        self.test_data = config["test_data"]
-        self.test_labels = config["test_labels"]
-        self.train_acc = config["train_acc"]
-        self.train_loss = config["train_loss"]
-        self.test_acc = config["test_acc"]
-        self.test_loss = config["test_loss"]
+        self.test_data = config1["test_data"]
+        self.test_labels = config1["test_labels"]
+        self.train_acc = config1["train_acc"]
+        self.train_loss = config1["train_loss"]
+        self.test_acc = config1["test_acc"]
+        self.test_loss = config1["test_loss"]
+
+
+        self.train_acc_low = config2["train_al"]
+        self.train_acc_high = config2["train_ah"]
+        self.train_loss_low = config2["train_ll"]
+        self.train_loss_high = config2["train_lh"]
+
+        self.test_acc_low = config2["test_al"]
+        self.test_acc_high = config2["test_ah"]
+        self.test_loss_low = config2["test_ll"]
+        self.test_loss_high = config2["test_lh"]
+
 
 
 class TestValidateArguments(TestMetalDefect):
@@ -67,7 +85,7 @@ class TrainParamsError(TestMetalDefect):
 
     def train_params(self):
         """Checks if the model has train parameters within bounds"""
-        self.assertTrue(90 <= self.train_acc <= 100 & 0.05 <= self.train_loss <= 0.2)
+        self.assertTrue(self.train_acc_low <= self.train_acc <= self.train_acc_high & self.train_loss_low <= self.train_loss <= self.train_loss_high)
 
     def __str__(self):
         return "TrainParametersError: Model train accuracy/loss is not within acceptable parameters"
@@ -80,7 +98,7 @@ class TestParamsError(TestMetalDefect):
 
     def test_params(self):
         """Checks if the model has test parameters within bounds"""
-        self.assertTrue(85 <= self.test_acc <= 100 & 0.05 <= self.test_loss <= 0.3)
+        self.assertTrue(self.test_acc_low <= self.test_acc <= self.test_acc_high & self.test_loss_low <= self.test_loss <= self.test_loss_high)
 
     def __str__(self):
         return "TestParametersError: Model test accuracy/loss is not within acceptable parameters"
