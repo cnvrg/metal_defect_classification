@@ -55,8 +55,9 @@ tasks:
           - '/cnvrg'
       - key: prefix
         type: 'categorical'
-        values: ['tsf/test.csv']
-
+        values: 
+          - None
+        
   - title: Metal Defect Training
     top: 400
     left: 300
@@ -72,9 +73,9 @@ tasks:
     command: python train.py
 
     requirements:
-      cpu: 3.5
-      memory: 7.5
-      gpu: 0
+      cpu: 2
+      memory: 2
+      gpu: 1
       hpu: 0
 
 
@@ -87,11 +88,11 @@ tasks:
       - key: train_path
         type: 'categorical'
         values:
-          - '/input/tsf_split_data/df_train.csv'
+          - None
       - key: test_path
         type: 'categorical'
         values: 
-          - '/input/tsf_split_data/df_test.csv'
+          - None
       
 
 
