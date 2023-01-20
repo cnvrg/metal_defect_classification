@@ -1,0 +1,3 @@
+train_dir: /NEU-DET/train/
+test_dir: /NEU-DET/validation/
+
