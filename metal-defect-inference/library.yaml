@@ -1,4 +1,3 @@
----
 title: Metal Defect Inference # required for on creation, a slug will be generated from the title? -> inference-library
 version: 1.0.0 # required
 description: "Inference on metal defects" # optional
@@ -39,4 +38,3 @@ arguments:
   input_schema:
     img: file 
   output_schema: {}
-    

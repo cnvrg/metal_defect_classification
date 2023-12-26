@@ -9,7 +9,7 @@ tags:
   - training
 
 # Available only for training (exec tasks) libraries only
-command: python train.py
+command: python train_original.py
 
 # These will replace the "compute" argument, values must be >= 0:
 # We need to add requirement for distributed pods
@@ -20,7 +20,7 @@ requirements:
   hpu: 0
 
 # This will replace the "docker_images" argument (?) need to work in cnvrg as well
-image: python:3.8
+image: cnvrg:v5.0
 
 # This will replace "env_setup", currently only python 3 is supported.
 language: python3
